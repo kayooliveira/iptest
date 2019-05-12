@@ -28,12 +28,6 @@ BGM="\033[45m" # Magenta (Vermelho Claro)
 BGC="\033[46m" # Cyan (Ciano - Azul Claro)
 BGW="\033[47m" # White (Branco)
 
-#Atributos do script
-ip=$1
-range=`seq 1 $2`
-# dir=`> $3`
-dir=$3
-
 function helpScreen(){
 	clear
 		echo -e "$BC###################################################################"
@@ -57,15 +51,15 @@ fi
 if [[ $2 == "" ]]; then
 	helpScreen
 fi
-if [[ -z $3 ]]; then
-	dir=""
+if [[ $4 == "" ]]; then
+	echo
+else
+	for range in $(seq 1 $2);do
+		ping -c1 $1.$range | grep "64 bytes" | cut -d " " -f 4,7,8 >> $4 
+	done
 fi
 if [[ $3 == "" ]]; then
-	for ranges in $range;do
-		ping -c1 $1.$ranges | grep "64 bytes" | cut -d " " -f 4,7,8 
-	done
-else
-	for ranges in $range;do
-		ping -c1 $1.$ranges | grep "64 bytes" | cut -d " " -f 4,7,8 >> $3 
+	for range in $(seq 1 $2);do
+		ping -c1 $1.$range | grep "64 bytes" | cut -d " " -f 4,7,8 
 	done
 fi
