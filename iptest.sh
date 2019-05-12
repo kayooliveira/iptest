@@ -51,19 +51,21 @@ function helpScreen(){
 		echo -e "$BC###################################################################"
 		exit
 }
+if [[ $1 == "" ]]; then
+	helpScreen
+fi
+if [[ $2 == "" ]]; then
+	helpScreen
+fi
 if [[ -z $3 ]]; then
 	dir=""
+fi
+if [[ $3 == "" ]]; then
+	for ranges in $range;do
+		ping -c1 $1.$ranges | grep "64 bytes" | cut -d " " -f 4,7,8 
+	done
 else
 	for ranges in $range;do
 		ping -c1 $1.$ranges | grep "64 bytes" | cut -d " " -f 4,7,8 >> $3 
-	done
-fi
-if [[ $1 == ""  ]]; then
-		helpScreen
-	elif [[ $2 == "" ]]; then
-		helpScreen
-else
-	for ranges in $range;do
-		ping -c1 $1.$ranges | grep "64 bytes" | cut -d " " -f 4,7,8
 	done
 fi
